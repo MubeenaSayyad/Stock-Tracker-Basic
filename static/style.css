@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background: #020617;
+    position: fixed;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    color: #22c55e;
+}
+
+.sidebar a {
+    display: block;
+    color: #94a3b8;
+    margin: 15px 0;
+    text-decoration: none;
+}
+
+.main {
+    margin-left: 240px;
+    padding: 20px;
+}
+
+.card {
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.buy { color: #22c55e; }
+.sell { color: #ef4444; }
+.hold { color: #facc15; }
