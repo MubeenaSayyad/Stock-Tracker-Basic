@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>User Profile</title>
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI', sans-serif;
+    background:#0b1220;
+    color:#e2e8f0;
+}
+
+/* NAVBAR */
+.navbar{
+    background:#0f172a;
+    padding:15px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.logo{
+    font-weight:bold;
+    color:#22c55e;
+    font-size:20px;
+}
+
+/* MAIN CONTAINER */
+.container{
+    max-width:1100px;
+    margin:35px auto;
+    display:grid;
+    grid-template-columns:320px 1fr;
+    gap:20px;
+    padding:0 15px;
+}
+
+/* LEFT PROFILE CARD */
+.profile-card{
+    background:rgba(17,24,39,0.95);
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 4px 18px rgba(0,0,0,0.55);
+    border:1px solid rgba(255,255,255,0.08);
+    text-align:center;
+}
+
+.avatar{
+    width:95px;
+    height:95px;
+    border-radius:50%;
+    background:#22c55e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:black;
+    font-size:40px;
+    margin:0 auto 15px;
+    font-weight:bold;
+}
+
+.balance{
+    margin-top:10px;
+    font-size:20px;
+    color:#22c55e;
+    font-weight:bold;
+}
+
+/* BUTTONS */
+.btn{
+    padding:10px 15px;
+    background:#22c55e;
+    color:black;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:bold;
+    width:100%;
+    margin-top:10px;
+    font-size:14px;
+    transition:0.2s;
+}
+
+.btn:hover{
+    background:#16a34a;
+    transform:scale(1.02);
+}
+
+.btn-red{
+    background:#ef4444;
+    color:white;
+}
+
+.btn-red:hover{
+    background:#dc2626;
+}
+
+.btn-blue{
+    background:#2563eb;
+    color:white;
+}
+
+.btn-blue:hover{
+    background:#1d4ed8;
+}
+
+/* RIGHT DETAILS */
+.details{
+    background:rgba(17,24,39,0.95);
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 4px 18px rgba(0,0,0,0.55);
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+/* SECTION */
+.section{
+    margin-bottom:25px;
+}
+
+.section h3{
+    margin-bottom:12px;
+    border-bottom:1px solid rgba(255,255,255,0.1);
+    padding-bottom:8px;
+    color:#22c55e;
+}
+
+/* ROW */
+.row{
+    display:flex;
+    justify-content:space-between;
+    padding:10px 0;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    font-size:14px;
+}
+
+/* BANK CARD */
+.bank-box{
+    margin-top:18px;
+    background:rgba(34,197,94,0.12);
+    border:1px solid rgba(34,197,94,0.35);
+    padding:15px;
+    border-radius:14px;
+    font-size:14px;
+    text-align:left;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .container{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">📈 Algo Trade</div>
+    <a href="/dashboard" style="text-decoration:none;">
+        <button class="btn-blue" style="width:auto;">⬅ Dashboard</button>
+    </a>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+    <!-- LEFT CARD -->
+    <div class="profile-card">
+        <div class="avatar">👤</div>
+
+        <h2 style="margin:0; font-size:18px;">{{email}}</h2>
+        <p style="margin:5px 0; color:gray;">Active Trader</p>
+
+        <div class="balance">
+            ₹ {{balance}}
+        </div>
+
+        <!-- BANK DETAILS -->
+        <div class="bank-box">
+            <h3 style="margin:0 0 10px; color:#22c55e;">🏦 Bank Details</h3>
+
+            <p><b>Bank:</b> {{bank}}</p>
+            <p><b>Account:</b> {{account}}</p>
+            <p><b>IFSC:</b> {{ifsc}}</p>
+
+            <a href="/add_bank" style="text-decoration:none;">
+                <button class="btn">➕ Add / Update Bank</button>
+            </a>
+        </div>
+
+        <a href="/settings" style="text-decoration:none;">
+            <button class="btn-blue">⚙ Settings</button>
+        </a>
+
+        <form action="/logout">
+            <button class="btn-red">🚪 Logout</button>
+        </form>
+    </div>
+
+    <!-- RIGHT DETAILS -->
+    <div class="details">
+
+        <div class="section">
+            <h3>👤 Account Information</h3>
+
+            <div class="row">
+                <span>Email</span>
+                <span>{{email}}</span>
+            </div>
+
+            <div class="row">
+                <span>Account Type</span>
+                <span>Standard</span>
+            </div>
+
+            <div class="row">
+                <span>Status</span>
+                <span style="color:#22c55e;">Active</span>
+            </div>
+
+            <div class="row">
+                <span>Trading Access</span>
+                <span style="color:#22c55e;">Enabled</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>📊 Trading Summary</h3>
+
+            <div class="row">
+                <span>Wallet Balance</span>
+                <span>₹ {{balance}}</span>
+            </div>
+
+            <div class="row">
+                <span>Margin Available (5x)</span>
+                <span>₹ {{balance * 5}}</span>
+            </div>
+
+            <div class="row">
+                <span>Risk Limit</span>
+                <span style="color:orange;">2%</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>🔒 Security</h3>
+
+            <p style="color:gray; font-size:14px;">
+                Protect your account by updating your password regularly.
+            </p>
+
+            <a href="/change_password" style="text-decoration:none;">
+                <button class="btn">Change Password</button>
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

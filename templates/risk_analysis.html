@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Risk Analysis</title>
+
+<style>
+body{
+    font-family:'Segoe UI', Arial;
+    background:#0b1220;
+    margin:0;
+    color:#e2e8f0;
+}
+
+/* NAVBAR */
+.navbar{
+    background:#0f172a;
+    padding:12px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.navbar h2{
+    margin:0;
+    color:#22c55e;
+    font-size:18px;
+}
+
+.navbar a{
+    color:white;
+    text-decoration:none;
+    margin-left:12px;
+    font-weight:500;
+    font-size:13px;
+}
+
+.navbar a:hover{
+    color:#22c55e;
+}
+
+/* CONTAINER */
+.container{
+    padding:15px;
+}
+
+/* CARDS */
+.cards{
+    display:flex;
+    gap:12px;
+    margin-bottom:12px;
+    flex-wrap:wrap;
+}
+
+.card{
+    flex:1;
+    min-width:160px;
+    background:rgba(17,24,39,0.95);
+    padding:10px;
+    border-radius:14px;
+    box-shadow:0 3px 12px rgba(0,0,0,0.55);
+    border:1px solid rgba(255,255,255,0.08);
+    text-align:center;
+}
+
+.card h3{
+    margin:0;
+    color:#22c55e;
+    font-size:13px;
+    font-weight:600;
+}
+
+.card p{
+    font-size:17px;
+    margin-top:7px;
+    font-weight:bold;
+}
+
+/* CHART BOX */
+.chart{
+    background:rgba(17,24,39,0.95);
+    padding:12px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,0.08);
+    box-shadow:0 3px 12px rgba(0,0,0,0.55);
+    margin-top:12px;
+}
+
+.chart h2{
+    margin:0;
+    margin-bottom:10px;
+    font-size:16px;
+    color:#22c55e;
+}
+
+/* CANVAS */
+canvas{
+    max-width:100%;
+    height:220px !important;
+    background:rgba(255,255,255,0.03);
+    padding:8px;
+    border-radius:12px;
+}
+
+/* TEXT */
+.summary-text p{
+    margin:6px 0;
+    font-size:14px;
+}
+
+hr{
+    border:1px solid rgba(255,255,255,0.1);
+    margin:12px 0;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <h2>📊 Risk Analysis</h2>
+
+    <div>
+        <a href="/dashboard">🏠 Dashboard</a>
+        <a href="/portfolio">💼 Portfolio</a>
+        <a href="/trade_history">📜 History</a>
+        <a href="/watchlist">⭐ Watchlist</a>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
+
+<!-- CONTAINER -->
+<div class="container">
+
+    <!-- FIRST ROW -->
+    <div class="cards">
+        <div class="card">
+            <h3>Total Trades</h3>
+            <p>{{total_trades}}</p>
+        </div>
+
+        <div class="card">
+            <h3>Target Hits</h3>
+            <p style="color:#22c55e;">{{target_hits}}</p>
+        </div>
+
+        <div class="card">
+            <h3>StopLoss Hits</h3>
+            <p style="color:red;">{{stoploss_hits}}</p>
+        </div>
+
+        <div class="card">
+            <h3>Win Rate</h3>
+            <p style="color:deepskyblue;">{{win_rate}}%</p>
+        </div>
+    </div>
+
+    <!-- SECOND ROW -->
+    <div class="cards">
+        <div class="card">
+            <h3>Total Profit</h3>
+            <p style="color:#22c55e;">₹ {{total_profit}}</p>
+        </div>
+
+        <div class="card">
+            <h3>Total Loss</h3>
+            <p style="color:red;">₹ {{total_loss}}</p>
+        </div>
+
+        <div class="card">
+            <h3>Auto Sell Exits</h3>
+            <p style="color:orange;">{{auto_sell}}</p>
+        </div>
+
+        <div class="card">
+            <h3>Running Trades</h3>
+            <p style="color:deepskyblue;">{{running}}</p>
+        </div>
+    </div>
+
+    <!-- CHART SECTION -->
+    <div class="chart">
+        <h2>📊 Risk Charts</h2>
+
+        <div style="display:flex; gap:15px; flex-wrap:wrap;">
+
+            <div style="flex:1; min-width:280px;">
+                <h3 style="color:#22c55e; font-size:14px; margin-bottom:8px;">Trade Outcomes</h3>
+                <canvas id="pieChart"></canvas>
+            </div>
+
+            <div style="flex:1; min-width:280px;">
+                <h3 style="color:#22c55e; font-size:14px; margin-bottom:8px;">Profit vs Loss</h3>
+                <canvas id="barChart"></canvas>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SUMMARY TEXT -->
+    <div class="chart summary-text">
+        <h2>📌 Risk Summary</h2>
+
+        <p>✔ Target Hit Trades: <b>{{target_hits}}</b></p>
+        <p>❌ StopLoss Hit Trades: <b>{{stoploss_hits}}</b></p>
+        <p>🤖 Auto Sell Trades: <b>{{auto_sell}}</b></p>
+        <p>📊 Running Trades: <b>{{running}}</b></p>
+
+        <hr>
+
+        <p style="font-size:15px;">
+            📈 <b>Win Rate:</b> {{win_rate}}%
+        </p>
+    </div>
+
+</div>
+
+<!-- CHART.JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const pieData = {
+    labels: ["Target Hits", "StopLoss Hits", "Auto Sell", "Running"],
+    datasets: [{
+        data: [{{target_hits}}, {{stoploss_hits}}, {{auto_sell}}, {{running}}],
+        borderWidth: 1
+    }]
+};
+
+const barData = {
+    labels: ["Profit", "Loss"],
+    datasets: [{
+        label: "Amount",
+        data: [{{total_profit}}, {{total_loss}}],
+        borderWidth: 1
+    }]
+};
+
+new Chart(document.getElementById("pieChart"), {
+    type: "pie",
+    data: pieData,
+    options:{
+        responsive:true,
+        maintainAspectRatio:false
+    }
+});
+
+new Chart(document.getElementById("barChart"), {
+    type: "bar",
+    data: barData,
+    options: {
+        responsive:true,
+        maintainAspectRatio:false,
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+</script>
+
+</body>
+</html>

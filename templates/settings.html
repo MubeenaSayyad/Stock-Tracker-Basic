@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Settings</title>
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI', sans-serif;
+    background:#0b1220;
+    color:#e2e8f0;
+}
+
+/* NAVBAR */
+.navbar{
+    background:#0f172a;
+    padding:15px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.navbar h3{
+    margin:0;
+    color:#22c55e;
+}
+
+.navbar a{
+    text-decoration:none;
+    color:white;
+    font-weight:bold;
+}
+
+/* CONTAINER */
+.container{
+    max-width:950px;
+    margin:auto;
+    padding:40px 15px;
+}
+
+/* CARD */
+.card{
+    background:rgba(17,24,39,0.95);
+    padding:20px;
+    border-radius:16px;
+    box-shadow:0 4px 18px rgba(0,0,0,0.55);
+    border:1px solid rgba(255,255,255,0.08);
+    margin-bottom:20px;
+}
+
+/* TITLE */
+.card h3{
+    margin-top:0;
+    color:#22c55e;
+}
+
+/* INPUT */
+input{
+    width:95%;
+    padding:10px;
+    margin:8px 0;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.15);
+    background:#0f172a;
+    color:white;
+    outline:none;
+    font-size:14px;
+}
+
+input:focus{
+    border:1px solid #22c55e;
+}
+
+/* BUTTON */
+button{
+    padding:10px 15px;
+    background:#22c55e;
+    color:black;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:bold;
+    width:100%;
+    margin-top:8px;
+    font-size:14px;
+    transition:0.2s;
+}
+
+button:hover{
+    background:#16a34a;
+    transform:scale(1.02);
+}
+
+/* DANGER */
+.danger{
+    background:#ef4444;
+    color:white;
+}
+
+.danger:hover{
+    background:#dc2626;
+}
+
+/* MESSAGE */
+.message{
+    background:rgba(34,197,94,0.15);
+    border:1px solid rgba(34,197,94,0.35);
+    padding:12px;
+    border-radius:12px;
+    color:#22c55e;
+    margin-bottom:20px;
+    font-weight:bold;
+}
+
+/* SMALL TEXT */
+.small-text{
+    font-size:13px;
+    color:gray;
+    margin-top:-5px;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <h3>⚙ Settings</h3>
+    <a href="/dashboard">⬅ Back</a>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+{% if message %}
+<div class="message">
+    {{message}}
+</div>
+{% endif %}
+
+<!-- CHANGE PASSWORD -->
+<div class="card">
+    <h3>🔑 Change Password</h3>
+    <p class="small-text">Update your password for better security.</p>
+
+    <form action="/change_password" method="POST">
+        <input type="password" name="old_password" placeholder="Old Password" required>
+        <input type="password" name="new_password" placeholder="New Password" required>
+        <button>Update Password</button>
+    </form>
+</div>
+
+<!-- UPDATE PROFILE -->
+<div class="card">
+    <h3>👤 Update Profile</h3>
+    <p class="small-text">Change your registered email address.</p>
+
+    <form action="/update_profile" method="POST">
+        <input type="email" name="email" placeholder="New Email" required>
+        <button>Update Profile</button>
+    </form>
+</div>
+
+<!-- RESET BALANCE -->
+<div class="card">
+    <h3>💰 Reset Balance</h3>
+    <p class="small-text">Reset wallet balance back to ₹10000 (demo purpose).</p>
+
+    <form action="/reset_balance" method="POST">
+        <button>Reset to ₹10000</button>
+    </form>
+</div>
+
+<!-- ADD FUNDS -->
+<div class="card">
+    <h3>➕ Add Funds</h3>
+    <p class="small-text">Add money to your trading wallet.</p>
+
+    <form action="/add_funds" method="POST">
+        <input type="number" name="amount" placeholder="Enter Amount" required>
+        <button>Add Money</button>
+    </form>
+</div>
+
+<!-- DELETE ACCOUNT -->
+<div class="card">
+    <h3>⚠ Delete Account</h3>
+    <p class="small-text" style="color:#ef4444;">
+        This action is permanent and cannot be undone.
+    </p>
+
+    <form action="/delete_account" method="POST">
+        <button class="danger">Delete Account</button>
+    </form>
+</div>
+
+</div>
+
+</body>
+</html>

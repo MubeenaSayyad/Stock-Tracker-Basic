@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Trade History</title>
+
+<style>
+body{
+    font-family:'Segoe UI', Arial;
+    background:#0b1220;
+    margin:0;
+    color:#e2e8f0;
+}
+
+/* NAVBAR */
+.navbar{
+    background:#0f172a;
+    color:white;
+    padding:15px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.navbar h2{
+    margin:0;
+    color:#22c55e;
+}
+
+.navbar a{
+    color:white;
+    text-decoration:none;
+    margin-left:15px;
+    font-weight:500;
+}
+
+.navbar a:hover{
+    color:#22c55e;
+}
+
+/* CONTAINER */
+.container{
+    padding:20px;
+}
+
+/* MAIN CARD */
+.card{
+    background:rgba(17,24,39,0.95);
+    padding:15px;
+    border-radius:16px;
+    box-shadow:0 4px 18px rgba(0,0,0,0.55);
+    border:1px solid rgba(255,255,255,0.08);
+    margin-bottom:15px;
+}
+
+/* SUMMARY BOXES */
+.summary{
+    display:flex;
+    gap:15px;
+    margin:15px 0;
+}
+
+.summary .box{
+    flex:1;
+    text-align:center;
+    padding:15px;
+    border-radius:16px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.summary .box h4{
+    margin:0;
+    color:#22c55e;
+}
+
+.summary .box p{
+    font-size:20px;
+    margin:10px 0 0;
+}
+
+/* FILTER */
+.filter-box{
+    margin:15px 0;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+select{
+    padding:10px;
+    border-radius:12px;
+    background:#0f172a;
+    color:white;
+    border:1px solid rgba(255,255,255,0.2);
+    outline:none;
+}
+
+/* TABLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+    overflow:hidden;
+    border-radius:14px;
+}
+
+th{
+    background:#111827;
+    color:#22c55e;
+    padding:12px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    text-align:center;
+}
+
+tr:hover{
+    background:rgba(255,255,255,0.03);
+}
+
+/* STATUS COLORS */
+.running{ color:deepskyblue; font-weight:bold; }
+.profit{ color:#22c55e; font-weight:bold; }
+.loss{ color:red; font-weight:bold; }
+
+/* EMPTY */
+.empty{
+    text-align:center;
+    padding:20px;
+    color:gray;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <h2>📜 Trade History</h2>
+     
+    <div>
+        <a href="/dashboard">🏠 Dashboard</a>
+        <a href="/download_history">⬇ Download CSV</a>
+        
+    </div>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+<div class="card">
+    <h3>Total Trades: {{trades|length}}</h3>
+
+    <!-- FILTER -->
+    <div class="filter-box">
+        <b>Filter:</b>
+
+        <form method="GET" action="/trade_history">
+            <select name="status" onchange="this.form.submit()">
+                <option value="ALL" {% if status_filter=="ALL" %}selected{% endif %}>All</option>
+                <option value="Running" {% if status_filter=="Running" %}selected{% endif %}>Running</option>
+                <option value="Target" {% if status_filter=="Target" %}selected{% endif %}>Target Hit</option>
+                <option value="Stop" {% if status_filter=="Stop" %}selected{% endif %}>Stop Loss Hit</option>
+                <option value="AUTO SELL" {% if status_filter=="AUTO SELL" %}selected{% endif %}>Auto Sell Exit</option>
+                <option value="AUTO BUY" {% if status_filter=="AUTO BUY" %}selected{% endif %}>Auto Buy</option>
+            </select>
+        </form>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary">
+
+        <div class="box">
+            <h4>💰 Total Profit</h4>
+            <p class="profit">₹ {{total_profit}}</p>
+        </div>
+
+        <div class="box">
+            <h4>🔴 Total Loss</h4>
+            <p class="loss">₹ {{total_loss}}</p>
+        </div>
+
+        <div class="box">
+            <h4>📊 Net Result</h4>
+            {% if net >= 0 %}
+            <p class="profit">₹ {{net}}</p>
+            {% else %}
+            <p class="loss">₹ {{net}}</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+    {% if trades %}
+
+    <table>
+        <tr>
+            <th>Stock</th>
+            <th>Entry</th>
+            <th>Qty</th>
+            <th>SL</th>
+            <th>Target</th>
+            <th>Status</th>
+            <th>Profit</th>
+            <th>Loss</th>
+            <th>Date</th>
+        </tr>
+
+        {% for t in trades %}
+        <tr>
+            <td><b>{{t[2]}}</b></td>
+            <td>₹ {{t[3]}}</td>
+            <td>{{t[4]}}</td>
+            <td>₹ {{t[5]}}</td>
+            <td>₹ {{t[6]}}</td>
+
+            <td>
+            {% if "Target" in t[7] %}
+                <span class="profit"> {{t[7]}}</span>
+            {% elif "Stop" in t[7] %}
+                <span class="loss"> {{t[7]}}</span>
+            {% elif "AUTO SELL" in t[7] %}
+                <span style="color:orange; font-weight:bold;"> {{t[7]}}</span>
+            {% elif "AUTO BUY" in t[7] %}
+                <span class="profit">🤖 {{t[7]}}</span>
+            {% else %}
+                <span class="running">📊 {{t[7]}}</span>
+            {% endif %}
+            </td>
+
+            <td class="profit">₹ {{t[8]}}</td>
+            <td class="loss">₹ {{t[9]}}</td>
+            <td>{{t[10]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% else %}
+
+    <div class="empty">
+        <h3>No Trades Yet 📭</h3>
+        <p>Start trading to see history here</p>
+    </div>
+
+    {% endif %}
+
+</div>
+
+</div>
+
+</body>
+</html>

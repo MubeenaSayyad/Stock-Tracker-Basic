@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Portfolio</title>
+
+    <style>
+        body{
+            font-family:'Segoe UI', Arial;
+            background:#0b1220;
+            margin:0;
+            color:#e2e8f0;
+        }
+
+        .navbar{
+            background:#0f172a;
+            padding:15px 30px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            border-bottom:1px solid rgba(255,255,255,0.08);
+        }
+
+        .navbar h2{
+            margin:0;
+            color:#22c55e;
+        }
+
+        .navbar a{
+            color:white;
+            text-decoration:none;
+            margin-right:15px;
+        }
+
+        .container{
+            padding:20px;
+        }
+
+        .cards{
+            display:flex;
+            gap:15px;
+            margin-bottom:20px;
+        }
+
+        .card{
+            flex:1;
+            background:rgba(17,24,39,0.95);
+            padding:18px;
+            border-radius:16px;
+            box-shadow:0 4px 18px rgba(0,0,0,0.55);
+            border:1px solid rgba(255,255,255,0.08);
+        }
+
+        .card h3{
+            margin:0;
+            color:#22c55e;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            margin-top:15px;
+            background:rgba(17,24,39,0.95);
+            border-radius:16px;
+            overflow:hidden;
+        }
+
+        th, td{
+            padding:12px;
+            text-align:left;
+            border-bottom:1px solid rgba(255,255,255,0.08);
+        }
+
+        th{
+            color:#22c55e;
+        }
+
+        .profit{
+            color:#22c55e;
+            font-weight:bold;
+        }
+
+        .loss{
+            color:red;
+            font-weight:bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>💼 Portfolio</h2>
+
+    <div>
+        <a href="/dashboard">🏠 Dashboard</a>
+        <a href="/watchlist">⭐ Watchlist</a>
+        <a href="/trade_history">📜 History</a>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="cards">
+        <div class="card">
+            <h3>Balance</h3>
+            <p style="font-size:22px;">₹ {{balance}}</p>
+        </div>
+
+        <div class="card">
+            <h3>Total Profit</h3>
+            <p class="profit" style="font-size:22px;">₹ {{total_profit}}</p>
+        </div>
+
+        <div class="card">
+            <h3>Total Loss</h3>
+            <p class="loss" style="font-size:22px;">₹ {{total_loss}}</p>
+        </div>
+
+        <div class="card">
+            <h3>Net P/L</h3>
+            {% if net >= 0 %}
+            <p class="profit" style="font-size:22px;">₹ {{net}}</p>
+            {% else %}
+            <p class="loss" style="font-size:22px;">₹ {{net}}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <h3>📌 Recent Trades</h3>
+
+    {% if trades %}
+    <table>
+        <tr>
+            <th>Symbol</th>
+            <th>Entry</th>
+            <th>Qty</th>
+            <th>Status</th>
+            <th>Profit</th>
+            <th>Loss</th>
+            <th>Date</th>
+        </tr>
+
+        {% for t in trades %}
+        <tr>
+            <td>{{t[2]}}</td>
+            <td>{{t[3]}}</td>
+            <td>{{t[4]}}</td>
+            <td>{{t[7]}}</td>
+            <td class="profit">{{t[8]}}</td>
+            <td class="loss">{{t[9]}}</td>
+            <td>{{t[10]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>No trades available</p>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

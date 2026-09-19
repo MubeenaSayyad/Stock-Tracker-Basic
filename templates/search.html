@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Stock Tracker</title>
+</head>
+
+<body>
+
+<h2>Stock Tracker</h2>
+
+<form method="POST" action="/search">
+
+<label>Enter Stock Symbol</label>
+
+<input type="text" name="symbol" required>
+
+<button type="submit">Search</button>
+
+</form>
+
+
+{% if stock %}
+
+<hr>
+
+<h3>Stock Details</h3>
+
+<p><b>Symbol:</b> {{stock.symbol}}</p>
+<p><b>Open:</b> {{stock.open}}</p>
+<p><b>High:</b> {{stock.high}}</p>
+<p><b>Low:</b> {{stock.low}}</p>
+<p><b>Current Price:</b> {{stock.price}}</p>
+<p><b>Volume:</b> {{stock.volume}}</p>
+<p><b>Latest Trading Day:</b> {{stock.latest_trading_day}}</p>
+
+{% endif %}
+
+
+{% if predicted_price %}
+
+<hr>
+
+<h3>Predicted Next Price</h3>
+
+<p>{{predicted_price}}</p>
+
+{% endif %}
+
+
+{% if graph %}
+
+<hr>
+
+<h3>Stock Price Graph</h3>
+
+<img src="{{graph}}" width="500">
+
+{% endif %}
+
+
+<hr>
+
+<h3>Trading Simulation</h3>
+
+<form method="POST" action="/trade">
+
+<label>Stock Symbol</label>
+<input type="text" name="symbol" required>
+
+<br><br>
+
+<label>Quantity</label>
+<input type="number" name="quantity" required>
+
+<br><br>
+
+<label>Stop Loss</label>
+<input type="number" step="0.01" name="stop_loss" required>
+
+<br><br>
+
+<label>Take Profit</label>
+<input type="number" step="0.01" name="take_profit" required>
+
+<br><br>
+
+<button type="submit">Start Trade</button>
+
+</form>
+
+
+{% if trade_status %}
+
+<hr>
+
+<h3>Trade Status</h3>
+
+<p>{{trade_status}}</p>
+
+{% endif %}
+
+
+{% if balance %}
+
+<p><b>Remaining Balance:</b> {{balance}}</p>
+
+{% endif %}
+
+</body>
+
+</html>

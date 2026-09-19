@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Add Bank Account</title>
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI', sans-serif;
+    background:linear-gradient(135deg,#1e3a8a,#2563eb,#38bdf8);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.card{
+    width:420px;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.25);
+}
+
+h2{
+    text-align:center;
+    margin-top:0;
+    color:#1e293b;
+}
+
+p{
+    text-align:center;
+    color:#475569;
+    margin-bottom:25px;
+}
+
+label{
+    font-weight:600;
+    color:#1e293b;
+    display:block;
+    margin-bottom:6px;
+    margin-top:12px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    outline:none;
+    font-size:15px;
+}
+
+input:focus{
+    border:1px solid #2563eb;
+    box-shadow:0 0 8px rgba(37,99,235,0.3);
+}
+
+.btn{
+    width:100%;
+    margin-top:20px;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background:#1d4ed8;
+}
+
+.back{
+    display:block;
+    text-align:center;
+    margin-top:15px;
+    text-decoration:none;
+    color:#2563eb;
+    font-weight:600;
+}
+
+.back:hover{
+    text-decoration:underline;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+    <h2>🏦 Add Bank Account</h2>
+    <p>Enter your bank details to enable withdrawal</p>
+
+    <form method="POST">
+
+        <label>Bank Name</label>
+        <input type="text" name="bank" placeholder="Example: SBI / HDFC" required>
+
+        <label>Account Number</label>
+        <input type="text" name="account" placeholder="Enter account number" required>
+
+        <label>IFSC Code</label>
+        <input type="text" name="ifsc" placeholder="Example: SBIN0001234" required>
+
+        <button type="submit" class="btn">✅ Save Bank Details</button>
+
+    </form>
+
+    <a class="back" href="/profile"><button>⬅ Back to Profile</button></a>
+</div>
+
+</body>
+</html>

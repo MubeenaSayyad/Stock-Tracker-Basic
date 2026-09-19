@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>STOCK TRACKER</title>
+<link rel="stylesheet" href="/static/style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{
+    font-family: 'Segoe UI', Arial;
+    background:#0b1220;
+    margin:0;
+    color:#e2e8f0;
+}
+
+/* NAVBAR */
+.navbar{
+    background:#0f172a;
+    color:white;
+    padding:15px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.6);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.navbar h2{
+    margin:0;
+    font-size:22px;
+    color:#22c55e;
+}
+
+.logoMenu{
+    position:relative;
+}
+
+.logoDropdown{
+    display:none;
+    position:absolute;
+    left:0;
+    top:45px;
+    background:#111827;
+    width:190px;
+    border-radius:12px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.7);
+    overflow:hidden;
+    z-index:999;
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.logoDropdown a{
+    display:block;
+    padding:12px;
+    text-decoration:none;
+    color:white;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    font-size:14px;
+}
+
+.logoDropdown a:hover{
+    background:#22c55e;
+    color:black;
+}
+
+/* PROFILE */
+.profile{
+    position:relative;
+}
+
+.profile-icon{
+    font-size:22px;
+    cursor:pointer;
+    background:rgba(255,255,255,0.08);
+    padding:8px 12px;
+    border-radius:10px;
+}
+
+/* DROPDOWN */
+.dropdown{
+    display:none;
+    position:absolute;
+    right:0;
+    top:45px;
+    background:#111827;
+    width:160px;
+    border-radius:12px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.7);
+    overflow:hidden;
+    z-index:999;
+}
+
+.dropdown a{
+    display:block;
+    padding:12px;
+    text-decoration:none;
+    color:white;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    font-size:14px;
+}
+
+.dropdown a:hover{
+    background:#22c55e;
+    color:black;
+}
+
+/* DASHBOARD */
+.dashboard{
+    display:flex;
+    gap:20px;
+    padding:20px;
+}
+
+/* LEFT + RIGHT */
+.left{
+    flex:2;
+}
+
+.right{
+    flex:1;
+    max-height:85vh;
+    overflow-y:auto;
+    padding-right:6px;
+}
+
+/* CARD */
+.card{
+    background: rgba(17,24,39,0.75);
+    padding:18px;
+    border-radius:18px;
+    margin-bottom:15px;
+    backdrop-filter: blur(12px);
+    box-shadow: 
+        0 0 10px rgba(34,197,94,0.1),
+        0 0 25px rgba(0,0,0,0.6);
+    border:1px solid rgba(255,255,255,0.08);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform: translateY(-5px);
+    box-shadow: 
+        0 0 15px rgba(34,197,94,0.4),
+        0 0 40px rgba(0,0,0,0.8);
+}
+
+/* BALANCE */
+.balance{
+    background: rgba(34,197,94,0.1);
+    padding:14px;
+    border-radius:16px;
+    font-size:16px;
+    margin-bottom:15px;
+    border:1px solid rgba(34,197,94,0.5);
+    box-shadow: 0 0 20px rgba(34,197,94,0.3);
+}
+
+/* INPUT */
+input{
+    padding:10px;
+    margin:6px 0;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.15);
+    width:95%;
+    background:#0f172a;
+    color:white;
+    outline:none;
+    font-size:14px;
+}
+
+input:focus{
+    border:1px solid #22c55e;
+}
+
+/* BUTTON */
+button{
+    padding:10px 16px;
+    background: linear-gradient(135deg,#22c55e,#4ade80);
+    color:black;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:bold;
+    width:100%;
+    margin-top:8px;
+    font-size:14px;
+    transition:0.3s;
+}
+
+button:hover{
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #22c55e;
+}
+   
+/* Scrollbar */
+.right::-webkit-scrollbar{
+    width:6px;
+}
+.right::-webkit-scrollbar-thumb{
+    background:#22c55e;
+    border-radius:10px;
+}
+input::placeholder{
+    color:#94a3b8;
+}
+html{
+    scroll-behavior:smooth;
+}
+
+/* 🔥 NOTIFICATION ANIMATION */
+#notifyBox{
+    animation: slideIn 0.4s ease;
+}
+
+@keyframes slideIn{
+    from{
+        transform: translateX(100%);
+        opacity:0;
+    }
+    to{
+        transform: translateX(0);
+        opacity:1;
+    }
+}
+
+.container{
+    display:flex;
+    height:80vh;
+}
+
+/* LEFT */
+.left{
+    width:220px;
+    background:#0f172a;
+    padding:10px;
+    border-right:1px solid rgba(255,255,255,0.1);
+}
+
+/* CENTER */
+.center{
+    flex:1;
+    background:#0b1220;
+}
+
+/* RIGHT */
+.right{
+    width:260px;
+    background:#0f172a;
+    padding:10px;
+    border-left:1px solid rgba(255,255,255,0.1);
+}
+
+/* BOTTOM */
+.bottom{
+    height:180px;
+    background:#0b1220;
+    border-top:1px solid rgba(255,255,255,0.1);
+    overflow:auto;
+}
+
+/* TABLE */
+table{
+    width:100%;
+    color:white;
+    border-collapse:collapse;
+}
+
+td, th{
+    padding:10px;
+    border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+
+</style>
+
+</head>
+
+<body>
+<!---notification-->
+<div id="notifyBox" style="
+display:none;
+position:fixed;
+top:20px;
+right:20px;
+background:#111827;
+color:white;
+padding:15px 18px;
+border-radius:14px;
+box-shadow:0 4px 20px rgba(0,0,0,0.6);
+border:1px solid rgba(255,255,255,0.1);
+z-index:9999;
+min-width:220px;
+">
+    <b id="notifyTitle">Notification</b>
+    <p id="notifyMsg" style="margin:6px 0 0; font-size:14px;"></p>
+</div>
+
+<!-- NAVBAR -->
+
+
+<div class="navbar">
+
+    <!-- LEFT LOGO DROPDOWN -->
+    <div class="logoMenu">
+        <h2 onclick="toggleLogoMenu()" style="cursor:pointer;">📈 Algo Trade </h2>
+
+        <div class="logoDropdown" id="logoDropdown">
+            <a href="/dashboard">🏠 Dashboard</a>
+            <a href="/watchlist">⭐ Watchlist</a>
+            <a href="/portfolio">💼 Portfolio</a>
+            <a href="/risk_analysis">📊 Risk Analysis</a>
+            <a href="/trade_history">📜 Trade History</a>
+            <a href="/help">❓ Help Center</a>
+        </div>
+    </div>
+
+    <!-- RIGHT PROFILE -->
+    <div class="profile">
+        <div class="profile-icon" onclick="toggleMenu()">👤</div>
+
+        <div class="dropdown" id="profileMenu">
+            <a href="/profile">My Profile</a>
+            <a href="/settings">Settings</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+</div>
+
+
+
+<!-- DASHBOARD -->
+<div class="dashboard">
+
+
+<!-- LEFT GRAPH -->
+<div class="left">
+<div class="card">
+<h3>📈 Live Stock Chart</h3>
+<div style="margin-top:20px;">
+    <iframe 
+    src="https://s.tradingview.com/widgetembed/?symbol={% if stock %}{{stock.symbol.replace('.NS','')}}{% else %}AAPL{% endif %}&interval=5&theme=dark"
+    width="100%"
+    height="500"
+    frameborder="0"
+    style="border-radius:15px; border:1px solid rgba(255,255,255,0.1);">
+</iframe>
+
+</div>
+        
+
+</div>
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="right">
+
+<div class="balance">
+<b>Balance: ₹ {{balance}}</b>
+</div>
+<div class="card">
+
+
+    <h3>⚙ Auto Trading</h3>
+
+    {% if auto_trade == 1 %}
+        <p style="color:lime;">✅ Auto Trade ON</p>
+        <a href="/toggle_auto_trade">
+            <button style="background:red; color:white;">Turn OFF</button>
+        </a>
+    {% else %}
+        <p style="color:orange;">⏸ Auto Trade OFF</p>
+        <a href="/toggle_auto_trade">
+            <button>Turn ON</button>
+        </a>
+    {% endif %}
+</div>
+
+{% if signal %}
+<div class="card">
+<h3>📊 Signal: {{ signal }}</h3>
+
+{% if signal == "BUY" %}
+<p style="color:green;">🤖 Auto Buy Active</p>
+{% elif signal == "SELL" %}
+<p style="color:red;">🤖 Auto Sell Active</p>
+{% else %}
+<p>⏸ HOLD</p>
+{% endif %}
+
+</div>
+{% endif %}
+
+
+<!-- SEARCH -->
+<div class="card">
+<h3>🔍 Search Stock</h3>
+
+<form action="/search" method="POST">
+<input type="text" name="symbol" placeholder="Enter Stock Symbol (AAPL)" required>
+<br>
+<button type="submit">Search</button>
+</form>
+</div>
+
+<!-- STOCK DETAILS -->
+{% if stock %}
+<div class="card">
+<h3>{{stock.symbol}} Details</h3>
+<p>Open: {{stock.open}}</p>
+<p>High: {{stock.high}}</p>
+<p>Low: {{stock.low}}</p>
+<p>Price: {{stock.price}}</p>
+<p>Volume: {{stock.volume}}</p>
+</div>
+{% endif %}
+
+{% if predicted_price is not none %}
+<div class="card">
+    <h3>🔮 Predicted Price</h3>
+    <p style="color:deepskyblue; font-size:18px;">
+        ₹ {{ predicted_price }}
+    </p>
+</div>
+{% endif %}
+
+
+<!-- TRADE -->
+{% if stock %}
+<div class="card">
+
+<h3>💰 Execute Trade</h3>
+
+<form action="/trade" method="POST">
+
+<input type="hidden" name="symbol" value="{{stock.symbol}}">
+
+<input type="number" step="0.01" name="entry_price" value="{{stock.price}}" readonly>
+
+<input type="number" name="quantity" placeholder="Quantity" required>
+
+<input type="number" step="0.01" name="stop_loss" placeholder="Stop Loss" required>
+
+<input type="number" step="0.01" name="take_profit" placeholder="Target Price" required>
+
+<br>
+
+{% if not trade_status or "Running" not in trade_status %}
+<button type="submit">Execute Trade</button>
+{% else %}
+<p style="color:red; font-weight:bold;">⚠ Trade Running - Cannot Buy</p>
+{% endif %}
+
+</form>
+
+{% if max_qty %}
+<p style="color:blue;">Max Quantity Allowed: {{max_qty}}</p>
+{% endif %}
+
+</div>
+{% endif %}
+
+{% if trade_status %}
+<div class="card">
+
+{% if 'Stop' in trade_status %}
+<h3 style="color:red;">{{trade_status}}</h3>
+
+{% elif 'Target' in trade_status %}
+<h3 style="color:green;">{{trade_status}}</h3>
+
+{% elif 'AUTO BUY' in trade_status %}
+<h3 style="color:green;">{{trade_status}}</h3>
+
+{% elif 'AUTO SELL' in trade_status %}
+<h3 style="color:orange;">{{trade_status}}</h3>
+
+{% else %}
+<h3 style="color:blue;">{{trade_status}}</h3>
+
+{% endif %}
+
+
+
+</div>
+{% endif %}
+
+<!-- SUMMARY -->
+{% if investment %}
+<div class="card">
+<h3>📊 Trade Summary</h3>
+
+<p><b>Current Price:</b> ₹ <span id="livePrice">{{current_price}}</span></p>
+
+
+
+<p><b>Investment:</b> ₹ {{investment}}</p>
+
+<p><b>Status:</b> <span id="liveStatus">{{trade_status}}</span></p>
+
+<p style="color:green;"><b>Profit:</b> ₹ <span id="liveProfit">{{profit}}</span></p>
+<p style="color:red;"><b>Loss:</b> ₹ {{loss}}</p>
+
+<form action="/sell" method="POST">
+    <button style="background:red; color:white; margin-top:10px;">
+         SELL / EXIT TRADE
+    </button>
+</form>
+
+</div>
+{% endif %}
+
+</div>
+</div>
+
+<script>
+function toggleMenu(){
+var menu=document.getElementById("profileMenu");
+menu.style.display = (menu.style.display==="block") ? "none" : "block";
+}
+</script>
+
+<script>
+let lastStatus = "";
+
+function showNotification(title, msg){
+    const box = document.getElementById("notifyBox");
+    document.getElementById("notifyTitle").innerText = title;
+    document.getElementById("notifyMsg").innerText = msg;
+
+    box.style.display = "block";
+
+    try{
+    document.getElementById("alertSound").play();
+       }catch(e){}
+
+    setTimeout(() => {
+        box.style.display = "none";
+    }, 5000);
+}
+
+function updateLiveData(){
+    fetch('/live_data')
+    .then(res => res.json())
+    .then(data => {
+
+        if(data.status === "NO TRADE") return;
+
+        if(document.getElementById("livePrice"))
+            document.getElementById("livePrice").innerText = data.price;
+
+        if(document.getElementById("liveStatus"))
+            document.getElementById("liveStatus").innerText = data.status;
+
+        if(document.getElementById("liveProfit"))
+            document.getElementById("liveProfit").innerText = data.profit;
+
+        // 🔥 Notification Trigger
+        if(data.status !== lastStatus && data.status !== "RUNNING"){
+    lastStatus = data.status;
+
+    if(data.status === "TARGET HIT"){
+        showNotification("🟢 Target Hit", "Trade exited with profit!");
+    }
+    else if(data.status === "STOP LOSS HIT"){
+        showNotification("🔴 Stop Loss Hit", "Trade exited with loss!");
+    }
+  }
+    });
+}
+
+
+setInterval(updateLiveData, 5000);
+</script>
+<script>
+function toggleLogoMenu(){
+    var menu = document.getElementById("logoDropdown");
+    menu.style.display = (menu.style.display==="block") ? "none" : "block";
+}
+</script>
+
+<!-- ✅ Paste Here -->
+{% if error_msg %}
+<script>
+showNotification("⚠ Error", "{{ error_msg }}");
+</script>
+{% endif %}
+
+
+<audio id="alertSound">
+    <source src="https://www.soundjay.com/buttons/sounds/beep-07.mp3" type="audio/mpeg">
+</audio>      
+
+
+</body>
+</html>

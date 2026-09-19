@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Help Center</title>
+
+<style>
+body{
+    font-family: Arial;
+    background:#0f172a;
+    color:white;
+    padding:20px;
+}
+
+/* SEARCH */
+#helpSearch{
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:none;
+    margin-bottom:20px;
+}
+
+/* FAQ */
+.faq-item{
+    background:#1e293b;
+    padding:10px;
+    margin-bottom:10px;
+    border-radius:8px;
+}
+
+/* CHAT BUTTON */
+.chat-btn{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:50px;
+    cursor:pointer;
+}
+
+/* CHAT BOX */
+#chatBox{
+    position:fixed;
+    bottom:80px;
+    right:20px;
+    width:260px;
+    background:#1e293b;
+    padding:10px;
+    border-radius:10px;
+    display:none;
+}
+
+/* CHAT MESSAGES */
+#chatMessages{
+    height:150px;
+    overflow-y:auto;
+    font-size:13px;
+    margin-bottom:10px;
+}
+
+/* INPUT */
+#chatInput{
+    width:70%;
+    padding:5px;
+}
+
+button{
+    padding:5px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>❓ Help Center</h2>
+
+<!-- 🔍 SEARCH -->
+<input type="text" id="helpSearch" placeholder="Search help..." onkeyup="searchHelp()">
+
+<!-- FAQ -->
+<div class="faq-item">How do I search for a stock?</div>
+<div class="faq-item">How to enable auto trading?</div>
+<div class="faq-item">What is BUY / SELL signal?</div>
+<div class="faq-item">How to check portfolio?</div>
+<div class="faq-item">Why chart is not loading?</div>
+
+<!-- 💬 CHAT BUTTON -->
+<button class="chat-btn" onclick="toggleChat()">💬</button>
+
+<!-- CHAT BOX -->
+<div id="chatBox">
+    <div id="chatMessages"></div>
+
+    <input type="text" id="chatInput" placeholder="Type message...">
+    <button onclick="sendMessage()">Send</button>
+</div>
+
+<!-- JS -->
+<script>
+
+// 🔍 SEARCH FUNCTION
+function searchHelp(){
+    let input = document.getElementById("helpSearch").value.toLowerCase();
+    let items = document.getElementsByClassName("faq-item");
+
+    for(let i=0; i<items.length; i++){
+        let text = items[i].innerText.toLowerCase();
+        items[i].style.display = text.includes(input) ? "block" : "none";
+    }
+}
+
+// 💬 OPEN/CLOSE CHAT
+function toggleChat(){
+    let box = document.getElementById("chatBox");
+    box.style.display = (box.style.display === "none") ? "block" : "none";
+}
+
+// 📩 SEND MESSAGE
+function sendMessage(){
+    let input = document.getElementById("chatInput");
+    let msg = input.value;
+
+    if(msg.trim() === "") return;
+
+    let chat = document.getElementById("chatMessages");
+
+    chat.innerHTML += "<p><b>You:</b> " + msg + "</p>";
+
+    botReply(msg);
+
+    input.value = "";
+
+    chat.scrollTop = chat.scrollHeight;
+}
+
+// 🤖 BOT REPLY
+function botReply(msg){
+    let reply = "Sorry, I didn't understand.";
+
+    msg = msg.toLowerCase();
+
+    if(msg.includes("search")){
+        reply = "Go to dashboard and enter stock symbol like AAPL.";
+    }
+    else if(msg.includes("auto trade")){
+        reply = "Click Turn ON in Auto Trading section.";
+    }
+    else if(msg.includes("buy")){
+        reply = "BUY means the system suggests purchasing a stock.";
+    }
+    else if(msg.includes("portfolio")){
+        reply = "Portfolio shows your total investment and current value.";
+    }
+    else if(msg.includes("chart")){
+        reply = "Check your internet connection or refresh the page.";
+    }
+
+    let chat = document.getElementById("chatMessages");
+
+    setTimeout(()=>{
+        chat.innerHTML += "<p><b>Bot:</b> " + reply + "</p>";
+        chat.scrollTop = chat.scrollHeight;
+    }, 500);
+}
+
+</script>
+
+</body>
+</html>
